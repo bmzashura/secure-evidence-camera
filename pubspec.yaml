@@ -1,0 +1,46 @@
+name: secure_evidence_camera
+description: "Secure Evidence Camera - Encrypted photo capture app"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+
+  # State Management
+  flutter_bloc: ^8.1.6
+  equatable: ^2.0.5
+
+  # Security & Crypto
+  flutter_secure_storage: ^9.2.2
+  encrypt: ^5.0.3
+  crypto: ^3.0.5
+  pointycastle: ^3.9.1
+
+  # Camera
+  camera: ^0.11.0+2
+
+  # Storage & File
+  path_provider: ^2.1.4
+  path: ^1.9.0
+
+  # Permissions
+  permission_handler: ^11.3.1
+
+  # Utilities
+  uuid: ^4.5.1
+  image: ^4.3.0
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
