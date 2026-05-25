@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:typed_data';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:camera/camera.dart';
-import 'package:image/image.dart' as img;
 import '../../../data/datasources/secure_local_datasource.dart';
 import 'camera_event.dart';
 import 'camera_state.dart';
@@ -93,12 +91,9 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
       final xFile = await state.controller!.takePicture();
       final bytes = await xFile.readAsBytes();
 
-      // Crop to 4:3 portrait
-      final croppedBytes = _cropToAspectRatio(bytes, 4 / 3);
-
       emit(state.copyWith(
         status: CameraStatus.preview,
-        previewBytes: croppedBytes,
+        previewBytes: bytes,
       ));
     } catch (e) {
       emit(state.copyWith(
@@ -106,33 +101,6 @@ class CameraBloc extends Bloc<CameraEvent, CameraState> {
         errorMessage: 'Failed to capture: $e',
       ));
     }
-  }
-
-  Uint8List _cropToAspectRatio(Uint8List bytes, double targetRatio) {
-    final image = img.decodeImage(bytes);
-    if (image == null) return bytes;
-
-    final srcW = image.width;
-    final srcH = image.height;
-    final srcRatio = srcW / srcH;
-
-    int cropX, cropY, cropW, cropH;
-    if (srcRatio > targetRatio) {
-      // Image is wider than target — crop width
-      cropW = (srcH * targetRatio).round();
-      cropH = srcH;
-      cropX = (srcW - cropW) ~/ 2;
-      cropY = 0;
-    } else {
-      // Image is taller than target — crop height
-      cropW = srcW;
-      cropH = (srcW / targetRatio).round();
-      cropX = 0;
-      cropY = (srcH - cropH) ~/ 2;
-    }
-
-    final cropped = img.copyCrop(image, x: cropX, y: cropY, width: cropW, height: cropH);
-    return Uint8List.fromList(img.encodeJpg(cropped, quality: 95));
   }
 
   void _onCapturePreview(CameraCapturePreview event, Emitter<CameraState> emit) {

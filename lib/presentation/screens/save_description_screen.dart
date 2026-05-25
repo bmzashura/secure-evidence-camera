@@ -128,7 +128,7 @@ class _SaveDescriptionScreenState extends State<SaveDescriptionScreen> {
                 borderRadius: BorderRadius.circular(11),
                 child: Image.memory(
                   widget.imageBytes,
-                  fit: BoxFit.contain,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
